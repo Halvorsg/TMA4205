@@ -17,9 +17,11 @@ function [u,v] = OF_cg(u0, v0, Ix, Iy, lambda, rhsu, rhsv, tol, maxit)
 % output:
 % u - numerical solution for u
 % v - numerical solution for v
-
+addpath GivenCode
+tic
+%% Initializing values
 [M,N] = size(Ix);
-%% Creating tri-diagonal part of matrix
+%% Creating B1
 Ix = Ix(:);
 Iy = Iy(:);
 e = -lambda*ones(M*N,1);
@@ -27,21 +29,34 @@ diagonal1 = -4*e + Ix.^2;
 diagonal2 = -4*e + Iy.^2;
 B1 = spdiags([e,e,diagonal1,e,e],[-M,-1,0,1,M],M*N,M*N);
 B2 = spdiags([e,e,diagonal2,e,e],[-M,-1,0,1,M],M*N,M*N);
+
 indices1 = (M+1):M:M*N; indices2 = M:M:(M*N-1);
 B1(indices1,indices2) = 0; B1(indices2,indices1) = 0; B2(indices1,indices2) = 0; B2(indices2,indices1) = 0;
-
-%% Creating off-diagonal part of matrix
+%% Creating IxIy
 IxIy = spdiags(Ix.*Iy,0,M*N,M*N);
-%% Creating final matrix
+
+%% Create full matrix
 C = [B1,IxIy;
     IxIy,B2];
+
 %% Creating RHS
 RHS = [rhsu(:);rhsv(:)];
-%% Solving system
+toc
+%% Solving system Cx = RHS
 x0 = [u0(:);v0(:)];
-[X,~,~] = conjugate_gradient(C,RHS,x0,Ix);
+tic
+[x,r,cnt] = conjugate_gradient(C,RHS,x0,tol,maxit);
+toc
+fprintf('Norm of residual = %1.2e \nNumber of steps = %i\n', norm(r),cnt)
+u = x(1:M*N); v = x(M*N+1:end);
+u = reshape(u,M,N); v = reshape(v,M,N);
+%% Visualization
+img = mycomputeColor(u,v); % Have made a small change in this function;
+figure;
+imagesc(img)
 
-u = reshape(X(1:M*N),size(Ix)); v = reshape(X(M*N+1:2*M*N),size(Ix));
+
+end
 
 
 
