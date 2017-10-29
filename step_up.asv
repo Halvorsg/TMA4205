@@ -1,0 +1,15 @@
+function [ output_vec_1,output_vec_2 ] = step_up( original_vector_1, original_vec_2 )
+%UNTITLED3 Summary of this function goes here
+%   Detailed explanation goes here
+
+u1 = zeros(M+2,N+2); v1 = zeros(M+2,N+2);
+u1([1:length(M)/2]*2,[1:length(N)/2]*2)=u1;
+v1([1:length(M)/2]*2,[1:length(N)/2]*2)=v1;
+u1=conv(u1,1/8[])
+
+
+u1=u1(:);
+v1=v1(:);
+
+end
+
