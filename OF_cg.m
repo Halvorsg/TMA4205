@@ -20,7 +20,7 @@ function [u,v] = OF_cg(u0, v0, Ix, Iy, lambda, rhsu, rhsv, tol, maxit)
 addpath GivenCode
 tic
 %% Initializing values
-[M,N] = size(Ix);
+[M,N] = size(Ix); % M rows and N columns
 %% Creating B1
 Ix = Ix(:);
 Iy = Iy(:);
