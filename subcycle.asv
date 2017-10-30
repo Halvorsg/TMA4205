@@ -17,10 +17,24 @@ if level<max_level & int_check
 [u1,v1]=step_down(u1,v1,M,N);
 [u1,v1]=subcycle(level+1,u1,v1,I0,I1,pre_s,post_s,lambda,max_level);
 [u1,v1]=step_up(u1,v1,M,N);
+else
+    if level==max_level
+    %% cg 
+    conjugate_gradient(A,b,x0,tol,maxit)
+    Syst_mat
+    RHS
+    u1
+    v1
+    M
+    N
+    
+    end
+  
 end
 
+
 %% post_smooth
-[u1,v1]=rb_GS(Syst_mat,RHS,u1,v1,post_s,M,N)
+[u1,v1]=rb_GS(Syst_mat,RHS,u1,v1,post_s,M,N);
 
 
 

@@ -20,6 +20,9 @@ if level<max_level & int_check
 else
     if level==max_level
     %% cg 
+    x0=[u1;v1];
+    [x,r,cnt]=conjugate_gradient(Syst_mat,RHS,x0,10^-6,500);
+    u1 = x(1:M*N); v1 = x(M*N+1:end);
     end
   
 end
