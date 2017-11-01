@@ -32,6 +32,7 @@ else
     %% cg 
     x0=[u1;v1];
     [x,r,cnt,norm_r]=conjugate_gradient(Syst_mat,RHS,x0(:),10^-3,1000);
+    fprintf('Norm of residual = %1.2e \nNumber of steps = %i\n', norm(r),cnt)
     plot(norm_r)
     u1 = x(1:M*N); v1 = x(M*N+1:end);
     end
