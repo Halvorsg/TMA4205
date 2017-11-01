@@ -41,45 +41,49 @@ rhsu = rhsu(:); rhsv = rhsv(:);
 %Black first, red second
 [black,red] = getRedBlack(M,N);
 D1 = B1(black,black); D2 = B1(red,red); D3 = B2(black,black); D4 = B2(red,red);
+D1_inv = diag(D1).^-1; D2_inv = diag(D2).^-1; D3_inv = diag(D3).^-1; D4_inv = diag(D4).*-1; 
 E1 = B1(black,red); F1 = B1(red,black); E2 = B2(black,red); F2 = B2(red,black);
 A1 = IxIy(black,black); A2 = IxIy(red,red);
-
 u1 = u0(black); u2 = u0(red); v1 = v0(black); v2 = v0(black); 
-b1 = rhsu(black); b2 = rhsu(red); b3 = rhsv(black); b4 = rhsv(black); 
-cnt = 0;
-ZEROS = spalloc(M*N/2,M*N/2,0);
-A = [ZEROS , E1 , A1 , ZEROS;
-    F1 , ZEROS , ZEROS , A2;
-    A1 , ZEROS , ZEROS , E2;
-    ZEROS , A2 , F2 , ZEROS];
-D = spdiags([diag(D1);diag(D2);diag(D3);diag(D4)],0,2*M*N,2*M*N);
-b = [b1;b2;b3;b4];
-norm_r = zeros(maxit,1);
-r = tol+1;
-u = zeros(size([rhsu;rhsv]));
+b1 = rhsu(black); b2 = rhsu(red); b3 = rhsv(black); b4 = rhsv(red); 
+
+ZEROS = spdiags(zeros(length(D1),1),0,M*N/2,M*N/2);
+A = [D1    , E1    , A1    , ZEROS;
+     F1    , D2    , ZEROS , A2;
+     A1    , ZEROS , D3    , E2;
+     ZEROS , A2    , F2    , D4];
 cnt = 1;
-norm_r = [1]
-while norm_r(cnt) > tol && 50 > cnt
-    cnt = cnt+1;
-    u = D\(b-A*u);
-    r = b-(A+D)*u;
-    norm_r(cnt) = norm(r);
-%     plot(norm_r)
-end
-cnt = 1
 norm_r = zeros(maxit,1);
 norm_r = tol+1;
+b = [b1;b2;b3;b4];
+tic
 while norm_r(cnt) > tol && maxit > cnt
     cnt = cnt+1;
     u1 = D1\(b1 - (E1*u2 + A1*v1));%
+    u5 = D1_inv.*(b1 - (E1*u2 + A1*v1));%
     u2 = D2\(b2 - (F1*u1 + A2*v2));%
+    u6 = D2_inv.*(b2 - (F1*u1 + A2*v2));%
     v1 = D3\(b3 - (E2*v2 + A1*u1));%
+    v7 = D3_inv.*(b3 - (E2*v2 + A1*u1));%
     v2 = D4\(b4 - (F2*v1 + A2*u2));%
+    v8 = D4_inv.*(b4 - (F2*v1 + A2*u2));%
     
-    b = [b1;b2;b3;b4];
-    u = [u1;u2;v1;v2];
-    norm_r(cnt) = norm(b-(A+D)*u);
-
+    
+    
+    
+    norm_r(cnt) = norm(b-A*[u1;u2;v1;v2]);
 end
+toc
+u = [u1;u2];
+v = [v1;v2];
+u([black,red]) = u;
+v([black,red]) = v;
+
+u = reshape(u,M,N); v = reshape(v,M,N);
+%% Visualization
+img = mycomputeColor(u,v); % Have made a small change in this function;
+figure;
+imagesc(img)
+
 
 end

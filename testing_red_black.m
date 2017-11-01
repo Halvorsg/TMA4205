@@ -9,7 +9,7 @@ full(A)
 
 
 
-M = 10;N = 10;
+M = 11;N = 10;
 e = ones(M*N,1);
 diagonal1 = -4*e;
 diagonal2 = -4*e;
@@ -41,8 +41,9 @@ spy(A([black,red],[black,red]))
 
 end 
 
-b1 = ones(length(black),1);
-b2 = ones(length(red),1);
+b = rand(length(A),1);
+b1 = b(black);
+b2 = b(red);
 u1 = zeros(size(b1));
 u2 = zeros(size(b2));
 D1 = A(black,black); D2 = A(red,red);
@@ -58,12 +59,14 @@ while r > 0.001 && cnt < maxiter
     norm_r(cnt) = norm([b1;b2] - A([black,red],[black,red])*[u1;u2]);
     r = norm_r(cnt);
 end
-
+re = length(red); bl = length(black);
 plot(log(norm_r))
+B = A([black,red],[black,red]);
+c = zeros(size(b));
+X = zeros(size(A));
+X([black,red],[black,red]) = B([1:bl,re+1:end],[1:bl,re+1:end]);
+disp(isequal(A,X))
 
-
-
-
-    
+   
     
     

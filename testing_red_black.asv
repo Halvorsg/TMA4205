@@ -9,7 +9,7 @@ full(A)
 
 
 
-M = 6;N = 4;
+M = 10;N = 10;
 e = ones(M*N,1);
 diagonal1 = -4*e;
 diagonal2 = -4*e;
@@ -23,31 +23,45 @@ if mod(M,2) == 1
 else
 X = reshape(1:M*N,M,N)';
 tic %Fastest
-red1 = zeros(ceil(M*N/2),1);
+red = zeros(ceil(M*N/2),1);
 redCNT = 0;
 for i = 1:2:M
-    red1(redCNT+1:redCNT + length(X(2:2:end,i))) = X(2:2:end,i);
+    red(redCNT+1:redCNT + length(X(2:2:end,i))) = X(2:2:end,i);
     redCNT = redCNT + length(X(2:2:end,i));
 end
 for i = 2:2:M
-    red1(redCNT+1:redCNT + length(X(1:2:end,i))) = X(1:2:end,i);
+    red(redCNT+1:redCNT + length(X(1:2:end,i))) = X(1:2:end,i);
     redCNT = redCNT + length(X(1:2:end,i));
 end
 toc 
-red1 = sort(red1);
-black1 = ([1:2:N*M]+[2:2:M*N])'-red1;
+red = sort(red);
+black = ([1:2:N*M]+[2:2:M*N])'-red;
 
-spy(A([black1,red1],[black1,red1]))
+spy(A([black,red],[black,red]))
 
 end 
 
-x = ones(length(A),1);
-D1 = A(black,black); D1 = A(red,red);
+b1 = ones(length(black),1);
+b2 = ones(length(red),1);
+u1 = zeros(size(b1));
+u2 = zeros(size(b2));
+D1 = A(black,black); D2 = A(red,red);
 E = A(black,red) ; F = A(red,black);
-cnt = 1;
-maxiter = 100;
-while r > 0.1 && cnt < maxiter
-    
+cnt = 0;
+maxiter = 1000;
+r = 1;
+norm_r = zeros(maxiter,1);
+while r > 0.001 && cnt < maxiter
+    cnt = cnt+1;
+    u1 = D1\(b1-(E*u2));
+    u2 = D2\(b2-(F*u1));
+    norm_r(cnt) = norm([b1;b2] - A([black,red],[black,red])*[u1;u2]);
+    r = norm_r(cnt);
+end
+r = length(red); b = length(black);
+plot(log(norm_r))
+X([black,red],[black,red]) = B([1:b,r+1:end],[1:b,r+1:end]);
+disp(isequal(A,X))
 
 
 

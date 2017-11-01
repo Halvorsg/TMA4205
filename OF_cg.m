@@ -59,15 +59,6 @@ img = mycomputeColor(u,v); % Have made a small change in this function;
 figure;
 imagesc(img)
 
-%% Irreducible row diagonal dominant
-diagonal = diag(C);
-clear v0 u0 v u rhsu rhsv img C B1 B2
-
-part1 = abs(sum(B1hat,2)) + abs(Ix.*Iy);
-part2 = abs(sum(B2hat,2)) + abs(Ix.*Iy);
-
-summen = [abs(diagonal(1:M*N)) - part1;
-          abs(diagonal(M*N+1:2*M*N)) - part2];
 end
 
 
