@@ -50,10 +50,10 @@ norm_r = zeros(maxit,1);
 b = [b1;b2;b3;b4];
 while maxit > cnt
     cnt = cnt+1;
-    v2 = D4\(b4 - (F2*v1 + A2*u2));%
+    u1 = D1\(b1 - (E1*u2 + A1*v1));%
     u2 = D2\(b2 - (F1*u1 + A2*v2));%
     v1 = D3\(b3 - (E2*v2 + A1*u1));%
-    u1 = D1\(b1 - (E1*u2 + A1*v1));%
+    v2 = D4\(b4 - (F2*v1 + A2*u2));%
     
     norm_r(cnt) = norm(b-A*[u1;u2;v1;v2]);
 end

@@ -20,7 +20,7 @@ v1=v0(:);
 
 norm1_r = [];
 for i = 1:5
-    [u1,v1,norm_r]=subcycle(0,u1,v1,I0,I1,10,10,1000,4,norm1_r);
+    [u1,v1,norm_r]=subcycle(0,u1,v1,I0,I1,50,50,1000,4,norm1_r);
     norm1_r = [norm1_r;norm_r];
 end
 
