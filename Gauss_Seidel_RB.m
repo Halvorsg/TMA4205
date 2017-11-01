@@ -44,7 +44,7 @@ D1 = B1(black,black); D2 = B1(red,red); D3 = B2(black,black); D4 = B2(red,red);
 D1_inv = diag(D1).^-1; D2_inv = diag(D2).^-1; D3_inv = diag(D3).^-1; D4_inv = diag(D4).*-1; 
 E1 = B1(black,red); F1 = B1(red,black); E2 = B2(black,red); F2 = B2(red,black);
 A1 = IxIy(black,black); A2 = IxIy(red,red);
-u1 = u0(black); u2 = u0(red); v1 = v0(black); v2 = v0(black); 
+u1 = u0(black); u2 = u0(red); v1 = v0(black); v2 = v0(red); 
 b1 = rhsu(black); b2 = rhsu(red); b3 = rhsv(black); b4 = rhsv(red); 
 
 ZEROS = spdiags(zeros(length(D1),1),0,M*N/2,M*N/2);

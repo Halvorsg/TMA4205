@@ -10,8 +10,12 @@ int_check=isinteger(int16(M)/(2^level)) && isinteger(int16(N)/(2^level));
 
 %% pre_smooth
 % [u1,v1]=rb_GS(Syst_mat,RHS,u0,v0,pre_s,M,N);
-% [u1,v1] = Gauss_Seidel_RB_y(u0, v0, lambda, RHS, Syst_mat, M,N, pre_s);
-u1 = u0
+[u1,v1,norm_r] = Gauss_Seidel_RB_y(u0, v0, lambda, RHS, Syst_mat, M,N, pre_s);
+norm
+plot(norm_r)
+title('Pre-smooth')
+% u1 = u0(:);
+% v1 = v0(:);
 
 %% initiate recursion
 if level<max_level && int_check
@@ -30,8 +34,10 @@ else
     if level==max_level
     %% cg 
     x0=[u1;v1];
-    [x,r,cnt,norm_r]=conjugate_gradient(Syst_mat,RHS,x0(:),10^-6,1000);
+    [x,r,cnt,norm_r]=conjugate_gradient(Syst_mat,RHS,x0(:),10^-3,1000);
+    fprintf('Norm of residual = %1.2e \nNumber of steps = %i\n', norm(r),cnt)
     plot(norm_r)
+    title('After CG')
     u1 = x(1:M*N); v1 = x(M*N+1:end);
     end
   
@@ -39,10 +45,10 @@ end
 
 
 %% post_smooth
-% [u1,v1]=rb_GS(Syst_mat,RHS,u1,v1,post_s,M,N);
-
-[u1,v1] = Gauss_Seidel_RB_y(u1, v1, lambda, RHS, Syst_mat, M,N, post_s);
+[u1,v1,norm_r] = Gauss_Seidel_RB_y(u1, v1, lambda, RHS, Syst_mat, M,N, post_s);
 r = norm(RHS-Syst_mat*[u1;v1])
+plot(norm_r);
+title('Post smoothing')
 
 end
 
