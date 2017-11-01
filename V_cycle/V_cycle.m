@@ -8,6 +8,7 @@ I1 = double(imread('frame11.png'));
 addpath GivenCode
 tic
 [M,N] = size(I0);
+[I0,I1] = imagePreprocessing(I0,I1);
 
 [It,Ix,Iy] =  dI(I0,I1);
 
