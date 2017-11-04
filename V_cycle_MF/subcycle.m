@@ -1,4 +1,4 @@
-function [ u1,v1 ,norm1_r,Syst_mat,RHS,level] = subcycle(Syst_mat,RHS,level,u0,v0,M,N,pre_s,post_s,lambda,max_level,norm1_r)
+function [ u1,v1 ,norm1_r] = subcycle(Syst_mat,RHS,level,u0,v0,M,N,pre_s,post_s,max_level,norm1_r)
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -10,9 +10,9 @@ int_check=isinteger(int16(M)/(2^level)) && isinteger(int16(N)/(2^level));
 
 %% pre_smooth
 % [u1,v1]=rb_GS(Syst_mat,RHS,u0,v0,pre_s,M,N);
-norm1_r = [norm1_r;norm(RHS-Syst_mat*[u0;v0])];
-plot(norm1_r,'-*')
-[u1,v1,norm_r] = Gauss_Seidel_RB_y(u0, v0, lambda, RHS, Syst_mat, M,N, pre_s);
+%norm1_r = [norm1_r;norm(RHS-Syst_mat*[u0;v0])];
+%plot(norm1_r,'-*')
+[u1,v1,norm_r] = Gauss_Seidel_RB_y(u0, v0, RHS, Syst_mat, M,N, pre_s);
 norm1_r = [norm1_r;norm_r];
 plot(norm1_r,'-*')
 title('Pre-smooth')
@@ -23,14 +23,13 @@ title('Pre-smooth')
 if level<max_level && int_check
 [u1]=step_down(u1,M,N);
 [v1]=step_down(v1,M,N);
-[Syst_mat,RHS]=step_down_Mat(Syst_mat,RHS,M,N);
+[Syst_mat_2,RHS_2]=step_down_Mat(Syst_mat,RHS,M,N);
 
 
-[u1,v1,norm1_r,Syst_mat,RHS,level]=subcycle(Syst_mat,RHS,level,u1,v1,M,N,pre_s,post_s,lambda,max_level,norm1_r)
+[u1,v1,norm1_r]=subcycle(Syst_mat_2,RHS_2,level+1,u1,v1,M/2,N/2,pre_s,post_s,max_level,norm1_r);
 
 [u1]=step_up(u1,M,N);
 [v1]=step_up(v1,M,N);
-[Syst_mat,RHS]=step_up_Mat(Syst_mat,M,N);
 % [I1]=step_up_im(I1,M,N);
 else
     if level==max_level
@@ -48,7 +47,7 @@ end
 
 
 %% post_smooth
-[u1,v1,norm_r] = Gauss_Seidel_RB_y(u1, v1, lambda, RHS, Syst_mat, M,N, post_s);
+[u1,v1,norm_r] = Gauss_Seidel_RB_y(u1, v1, RHS, Syst_mat, M,N, post_s);
 r = norm(RHS-Syst_mat*[u1;v1])
 norm1_r = [norm1_r;norm_r];
 plot(norm1_r);

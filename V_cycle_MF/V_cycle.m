@@ -22,8 +22,9 @@ v1=v0(:);
 
 norm1_r = [];
 for i = 1:1
-    [ u1,v1 ,norm1_r,Syst_mat,RHS,level]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,10,10,4,norm1_r)
-    norm1_r = [norm1_r;norm_r];
+    [ u1,v1 ,norm1_r]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,5,5,4,norm1_r);
+                                                 
+    %norm1_r = [norm1_r;norm_r];
 end
 
 u1 = reshape(u1,M,N); v1 = reshape(v1,M,N);

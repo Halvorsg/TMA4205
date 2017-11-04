@@ -1,4 +1,4 @@
-function [u,v,norm_r] = Gauss_Seidel_RB_y(u0, v0, lambda, RHS, Syst_mat, M,N, maxit)
+function [u,v,norm_r] = Gauss_Seidel_RB_y(u0, v0, RHS, Syst_mat, M,N, maxit)
 
 %
 % [u,v] = Gauss_Seidel_RB(u0, v0, Ix, Iy, rhsu, rhsv, tol, maxit) performs
