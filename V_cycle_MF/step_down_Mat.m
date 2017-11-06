@@ -18,7 +18,7 @@ B2=Cut_mat*B2*Cut_mat';
 D1=Cut_mat*D1*Cut_mat';
 D2=Cut_mat*D2*Cut_mat';
 
-Syst_mat=0.0625*[B1,D1;D2,B2];
+Syst_mat=0.25*[B1,D1;D2,B2];
 %% columnclip
 RHS_1=step_down(RHS_1,M,N);
 RHS_2=step_down(RHS_2,M,N);

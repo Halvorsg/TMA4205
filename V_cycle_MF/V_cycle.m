@@ -21,8 +21,8 @@ v1=v0(:);
 [Syst_mat,RHS] = rediscretize(I0,I1,M,N,1000);
 
 norm1_r = [];
-for i = 1:1
-    [ u1,v1 ,norm1_r]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,5,5,4,norm1_r);
+for i = 1:10
+    [ u1,v1 ,norm1_r]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,20,5,4,norm1_r);
                                                  
     %norm1_r = [norm1_r;norm_r];
 end
