@@ -59,7 +59,7 @@ figure
 plot(norm_r)
 
 %%temp
-[comp_1,comp_2] = rediscretize(I0,I1,M,N,lambda);
+%[comp_1,comp_2] = rediscretize(I0,I1,M,N,lambda);
 end
 
 

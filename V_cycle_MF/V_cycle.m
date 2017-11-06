@@ -22,7 +22,7 @@ v1=v0(:);
 
 norm1_r = [];
 for i = 1:10
-    [ u1,v1 ,norm1_r]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,20,5,4,norm1_r);
+    [ u1,v1 ,norm1_r]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,4,4,4,norm1_r);
                                                  
     %norm1_r = [norm1_r;norm_r];
 end
@@ -32,5 +32,9 @@ img = mycomputeColor(u1,v1); % Have made a small change in this function;
 figure;
 imagesc(img)
 
+
+%[u0, v0, Ix, Iy, lambda, rhsu, rhsv, tol, maxit] = initial_values();
+%[comp_u,comp_v]=OF_cg(u0, v0, Ix, Iy, lambda, rhsu, rhsv, tol, maxit);
+%norm([u1;v1]-[comp_u;comp_v])
 end
 
