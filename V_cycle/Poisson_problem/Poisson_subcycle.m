@@ -1,5 +1,5 @@
 function [ u1 ,norm1_r] = Poisson_subcycle(level,u0,RHS,pre_s,post_s,norm1_r,M,N)
-max_level = 2;
+max_level = 4;
 %% getSystem
 Syst_mat = Discretisize(M,N);
 
