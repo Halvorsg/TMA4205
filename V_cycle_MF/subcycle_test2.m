@@ -1,4 +1,4 @@
-function [ u1,v1 ,norm1_r] = subcycle(Syst_mat,RHS,level,u0,v0,M,N,pre_s,post_s,max_level,norm1_r)
+function [ u1,v1 ,norm1_r,A] = subcycle_test2(Syst_mat,RHS,level,u0,v0,M,N,pre_s,post_s,max_level,norm1_r,A,flag)
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -17,18 +17,21 @@ if level<max_level && int_check
 % [u1,v1]=rb_GS(Syst_mat,RHS,u0,v0,pre_s,M,N);
 %norm1_r = [norm1_r;norm(RHS-Syst_mat*[u0;v0])];
 %plot(norm1_r,'-*')
-[u1,v1,norm_r] = Gauss_Seidel_RB_y(u0, v0, RHS, Syst_mat, M,N, pre_s);
+[u1,v1,norm_r,A] = Gauss_Seidel_RB_level(u0, v0, RHS, Syst_mat, M,N, pre_s,flag,level,A);
 residual_u1_v1=RHS-Syst_mat*[u1;v1];
 norm1_r = [norm1_r;norm_r];
-plot(norm1_r,'-*')
+plot(log(norm1_r),'-*')
 title('Pre-smooth')
 % u1 = u0(:);
 % v1 = v0(:);
     
     
-[u0]=step_down(u1,M,N);
-[v0]=step_down(v1,M,N);
-[Syst_mat_2,RHS_2]=step_down_Mat(Syst_mat,RHS,M,N);
+%[u0]=step_down(u1,M,N);
+%[v0]=step_down(v1,M,N);
+u0=zeros(length(residual_u1_v1)/2,1);
+v0=zeros(length(residual_u1_v1)/2,1);
+
+[Syst_mat_2,RHS_2]=step_down_Mat(Syst_mat,residual_u1_v1,M,N);
 
 
 [up_u,up_v,norm1_r]=subcycle(Syst_mat_2,RHS_2,level+1,u0,v0,M/2,N/2,pre_s,post_s,max_level,norm1_r);
@@ -41,10 +44,10 @@ v1=v1+up_v;
 % [I1]=step_up_im(I1,M,N);
 
 %% post_smooth
-[u1,v1,norm_r] = Gauss_Seidel_RB_y(u1, v1, RHS, Syst_mat, M,N, post_s);
+[u1,v1,~,A] = Gauss_Seidel_RB_level(u1, v1, RHS, Syst_mat, M,N, post_s,flag,level,A);
 r = norm(RHS-Syst_mat*[u1;v1]);
-norm1_r = [norm1_r;norm_r];
-plot(norm1_r);
+norm1_r = [norm1_r;norm(r)];
+plot(log(norm1_r));
 title('Post smoothing')
 
 

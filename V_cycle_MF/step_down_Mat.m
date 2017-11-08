@@ -1,9 +1,7 @@
 function [ Syst_mat,RHS ] = step_down_Mat(Syst_mat,RHS,M,N)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
-
 Cut_mat=create_cut_mat(M,N);
-
 B1=Syst_mat(1:M*N,1:M*N);
 B2=Syst_mat(M*N+1:end,M*N+1:end);
 D1=Syst_mat(1:M*N,M*N+1:end);

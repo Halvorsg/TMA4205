@@ -1,4 +1,4 @@
-function V_cycle()
+function V_cycle_test()
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 addpath('C:\Users\halvo\Documents\MATLAB\TMA4205\TMA4205\GivenCode');
@@ -10,7 +10,7 @@ I1 = double(imread('frame11.png'));
 tic
 [M,N] = size(I0);
 [I0,I1] = imagePreprocessing(I0,I1);
-norm1_r=0;
+norm1_r=10;
 %% Initializing values
 step=0;
 int_check=isinteger(1);
@@ -19,16 +19,20 @@ u1=u0(:);
 v1=v0(:);
 
 [Syst_mat,RHS] = rediscretize(I0,I1,M,N,1000);
-
-norm1_r = [];
-tic
-for i = 1:20
-    [ u1,v1 ,norm1_r]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,3,3,4,norm1_r);
-                                                 
+% tic
+A = {};
+SMP = {};
+cnt = 1;
+flag = true;
+while norm1_r(end) > 0.01
+    tic
+    [ u1,v1 ,norm1_r,A,SMP]=subcycle_test(Syst_mat,RHS,1,u1,v1,M,N,5,5,4,norm1_r,A,SMP,flag);                                                 
     plot(log(norm1_r))
-    disp(i)
+    cnt = cnt+1;
+    flag = false;
+    toc
 end
-toc
+disp(cnt*toc)
 u1 = reshape(u1,M,N); v1 = reshape(v1,M,N);
 img = mycomputeColor(u1,v1); % Have made a small change in this function;
 figure;
