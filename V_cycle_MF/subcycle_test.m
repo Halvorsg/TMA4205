@@ -17,7 +17,7 @@ if level<max_level && int_check
 % [u1,v1]=rb_GS(Syst_mat,RHS,u0,v0,pre_s,M,N);
 %norm1_r = [norm1_r;norm(RHS-Syst_mat*[u0;v0])];
 %plot(norm1_r,'-*')
-[u1,v1,A] = Gauss_Seidel_RB_level(u0, v0, RHS, Syst_mat, M,N, pre_s,flag,level,A);
+[u1,v1,A] = Gauss_Seidel_RB_level(u0, v0, RHS, Syst_mat, M,N, pre_s,flag,level,A,false);
 residual_u1_v1=RHS-Syst_mat*[u1;v1];
 norm1_r = [norm1_r;norm(residual_u1_v1)];
 % plot(log(norm1_r),'-*')
@@ -52,12 +52,14 @@ v0=zeros(length(RHS_2)/2,1);
 [up_u]=step_up(up_u,M,N);
 [up_v]=step_up(up_v,M,N);
 
+
+
 u1=u1+up_u;
 v1=v1+up_v;
 % [I1]=step_up_im(I1,M,N);
 
 %% post_smooth
-[u1,v1,A] = Gauss_Seidel_RB_level(u1, v1, RHS, Syst_mat, M,N, pre_s,flag,level,A);
+[u1,v1,A] = Gauss_Seidel_RB_level(u1, v1, RHS, Syst_mat, M,N, pre_s,false,level,A,true);
 r = norm(RHS-Syst_mat*[u1;v1]);
 norm1_r = [norm1_r;norm(r)];
 % plot(log(norm1_r));
@@ -67,9 +69,9 @@ norm1_r = [norm1_r;norm(r)];
 else
     if level==max_level
     %% cg 
-%     x0=[u0;v0];
-    %[x,r,cnt,norm_r]=conjugate_gradient(Syst_mat,RHS,x0(:),10^-3,100);
-    x=Syst_mat\RHS;
+    x0=[u0;v0];
+    [x,~,~]=conjugate_gradient(Syst_mat,RHS,x0(:),10^-6,100);
+%     x=Syst_mat\RHS;
     %fprintf('Norm of residual = %1.2e \nNumber of steps = %i\n', norm(r),cnt)
     %norm1_r = [norm1_r;norm_r'];
     %plot(norm1_r,'-*')

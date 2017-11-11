@@ -1,4 +1,4 @@
-function [u,v,A] = Gauss_Seidel_RB_level(u0, v0, RHS, Syst_mat, M,N, maxit,saveMat,level,A)
+function [u,v,A] = Gauss_Seidel_RB_level(u0, v0, RHS, Syst_mat, M,N, maxit,saveMat,level,A, reverse)
 
 %
 % [u,v] = Gauss_Seidel_RB(u0, v0, Ix, Iy, rhsu, rhsv, tol, maxit) performs
@@ -35,12 +35,20 @@ switch saveMat
         u1 = u0(black); u2 = u0(red); v1 = v0(black); v2 = v0(red); 
         b1 = rhsu(black); b2 = rhsu(red); b3 = rhsv(black); b4 = rhsv(red); 
 
-        A{level} = {D1,D2,D3,D4,E1,E2,F1,F2,A1,A2,black,red};
+        A{level} = {D1,D2,D3,D4,E1,E2,F1,F2,A1,A2,black,red,u1,u2,v1,v2};
     case false
         rhsu = RHS(1:M*N); rhsv = RHS(M*N+1:end);
         black = A{level}{11};
         red = A{level}{12};
-        u1 = u0(black); u2 = u0(red); v1 = v0(black); v2 = v0(red); 
+        switch reverse
+            case false
+                u1 = A{level}{13};
+                u2 = A{level}{14};
+                v1 = A{level}{15};
+                v2 = A{level}{16};
+            case true
+                u1 = u0(black); u2 = u0(red); v1 = v0(black); v2 = v0(red); 
+        end
         b1 = rhsu(black); b2 = rhsu(red); b3 = rhsv(black); b4 = rhsv(red); 
         D1 = A{level}{1};
         D2 = A{level}{2};
@@ -55,12 +63,23 @@ switch saveMat
 end
 
 cnt = 0;
-while maxit > cnt
-    cnt = cnt+1;
-    u1 = D1.*(b1 - (E1*u2 + A1*v1));%
-    u2 = D2.*(b2 - (F1*u1 + A2*v2));%
-    v1 = D3.*(b3 - (E2*v2 + A1*u1));%
-    v2 = D4.*(b4 - (F2*v1 + A2*u2));%
+switch reverse
+    case false
+        while maxit > cnt
+            cnt = cnt+1;
+            u1 = D1.*(b1 - (E1*u2 + A1*v1));%
+            u2 = D2.*(b2 - (F1*u1 + A2*v2));%
+            v1 = D3.*(b3 - (E2*v2 + A1*u1));%
+            v2 = D4.*(b4 - (F2*v1 + A2*u2));%
+        end
+    case true
+        while maxit > cnt
+            cnt = cnt+1;
+            v2 = D4.*(b4 - (F2*v1 + A2*u2));%
+            v1 = D3.*(b3 - (E2*v2 + A1*u1));%
+            u2 = D2.*(b2 - (F1*u1 + A2*v2));%
+            u1 = D1.*(b1 - (E1*u2 + A1*v1));%
+        end
 end
 % toc
 u = [u1;u2];
