@@ -3,8 +3,8 @@ addpath('C:\Users\halvo\Documents\MATLAB\TMA4205\TMA4205\GivenCode');
 addpath('C:\Users\halvo\Documents\MATLAB\TMA4205\TMA4205\V_cycle_MF');
 addpath('C:\Users\halvo\Documents\MATLAB\TMA4205\TMA4205');
 %% Initializing values
-I0 = double(imread('frame10.png')); % Frame 1
-I1 = double(imread('frame11.png')); % Frame 2
+I0 = double((imread('frame10.png'))); % Frame 1
+I1 = double((imread('frame11.png'))); % Frame 2
 [M,N] = size(I0);                   % Size of the frames
 [I0,I1] = imagePreprocessing(I0,I1);% Smooting the pictures
 u1 = zeros(size(I0(:))); v1 = zeros(size(I0(:)));   % Initial guess for solution
