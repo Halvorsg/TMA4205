@@ -26,7 +26,7 @@ cnt = 1;
 flag = true;
 while norm1_r(end) > 0.01
     tic
-    [ u1,v1 ,norm1_r,A,SMP]=subcycle_test(Syst_mat,RHS,1,u1,v1,M,N,1,3,4,norm1_r,A,SMP,flag);                                                 
+    [ u1,v1 ,norm1_r,A,SMP]=subcycle_test(Syst_mat,RHS,1,u1,v1,M,N,3,3,4,norm1_r,A,SMP,flag);                                                 
     plot(log(norm1_r))
     cnt = cnt+1;
     flag = false;

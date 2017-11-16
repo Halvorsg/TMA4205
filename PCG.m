@@ -38,6 +38,7 @@ while sqrt(norm(s)) > tol && cnt < maxit
     toc
 end
 disp(cnt*toc)
+r = RHS-Syst_mat*x;
 plot(log(norm1_r))
 u1 = x(1:length(u1)); v1 = x(length(v1)+1:end);
 u1 = reshape(u1,M,N); v1 = reshape(v1,M,N);
