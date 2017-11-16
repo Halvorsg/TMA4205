@@ -66,14 +66,9 @@ norm1_r = [norm1_r;norm(r)];
 
 else
     if level==max_level
-    %% cg 
-%     x0=[u0;v0];
-    %[x,r,cnt,norm_r]=conjugate_gradient(Syst_mat,RHS,x0(:),10^-3,100);
-    x=Syst_mat\RHS;
-    %fprintf('Norm of residual = %1.2e \nNumber of steps = %i\n', norm(r),cnt)
-    %norm1_r = [norm1_r;norm_r'];
-    %plot(norm1_r,'-*')
-    %title('After CG')
+    %% Conjugate Gradient
+    x0=[u0;v0];
+    [x,~,~]=conjugate_gradient(Syst_mat,RHS,x0(:),10^-6,1000);
     u1 = x(1:M*N); v1 = x(M*N+1:end);
     end
   
