@@ -3,6 +3,8 @@ addpath('..\GivenCode');
 %% Initializing values
 time_stamps=zeros(maxit,1);
 norm_PCG_r=zeros(maxit,1);
+
+tic
 [M,N] = size(I0);                   % Size of the frames
 [I0,I1] = imagePreprocessing(I0,I1);% Smooting the pictures
 u1 = zeros(size(I0(:))); v1 = zeros(size(I0(:)));   % Initial guess for solution
@@ -34,7 +36,7 @@ while sqrt(norm(s)) > tol && cnt < maxit
     s = r'*z;
     beta = s/s_old;
     p = z + beta * p;
-    norm1_r = [norm1_r;norm(r)];
+    norm1_r = [norm1_r;sqrt(s)];
     time_stamps(cnt) = time_stamps(cnt-1) + toc;
     norm_PCG_r(cnt)=norm1_r(end);
 %    fprintf('Time passed this round: %f. \t Time passed in total: %f \n',toc,time)

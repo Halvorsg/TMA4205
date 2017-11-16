@@ -1,7 +1,7 @@
 function [norm_VC_r,time_stamps]=pic_V_cycle(I0,I1,tol,maxit,pre_s,post_s,max_level)
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
-addpath('..\GivenCode');
+
 time_stamps=zeros(maxit,1);
 norm_VC_r=zeros(maxit,1);
 tic
@@ -28,7 +28,7 @@ norm_VC_r(1)=norm(RHS);
 while norm1_r(end) > tol && cnt<maxit
     tic
     [ u1,v1 ,norm1_r,A,SMP]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,pre_s,post_s,max_level,norm1_r,A,SMP,saveMat);                                                 
-    plot(log(norm1_r))
+    %plot(log(norm1_r))
     cnt = cnt+1;
     saveMat = false;
     time_stamps(cnt) = time_stamps(cnt-1) + toc;
