@@ -1,5 +1,5 @@
 function [x,r,cnt] = PCG(tol,maxit)
-addpath('C:\Users\halvo\Documents\MATLAB\TMA4205\TMA4205\GivenCode');
+addpath('..\GivenCode');
 %% Initializing values
 I0 = double((imread('frame10.png'))); % Frame 1
 I1 = double((imread('frame11.png'))); % Frame 2
@@ -19,6 +19,7 @@ z = [zu1;zv1];
  p = z; s = z'*r;
 ZEROS = zeros(size(u1));
 cnt = 1;
+time = 0;
 while sqrt(norm(s)) > tol && cnt < maxit
     tic
     cnt = cnt+1;
@@ -33,9 +34,10 @@ while sqrt(norm(s)) > tol && cnt < maxit
     beta = s/s_old;
     p = z + beta * p;
     norm1_r = [norm1_r;norm(r)];
-    toc
+    time = time + toc;
+    fprintf('Time passed this round: %f. \t Time passed in total: %f \n',toc,time)
 end
-disp(cnt*toc)
+disp(time)
 r = RHS-Syst_mat*x;
 norm1_r = [norm1_r;norm(r)];
 plot(log(norm1_r))

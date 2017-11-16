@@ -1,7 +1,7 @@
 function V_cycle()
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
-addpath('C:\Users\halvo\Documents\MATLAB\TMA4205\TMA4205\GivenCode');
+addpath('..\GivenCode');
 
 [u0, v0, ~, ~, ~, ~, ~, ~, ~]=initial_values();
 I0 = double(imread('frame10.png'));
