@@ -29,7 +29,7 @@ cnt = 1;
 saveMat = true;
 time = 0;
 FLOPS = zeros(1,maxit);
-while norm1_r(end)/norm1_r(1) > 10^-8 && cnt < maxit
+while norm1_r(end)/norm1_r(1) > 10^-10 && cnt < maxit
     tic
     [ u1,v1 ,~,A,SMP,CG_FLOPS]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,3,3,4,norm1_r,A,SMP,saveMat,0);                                                 
     cnt = cnt+1;
@@ -37,7 +37,7 @@ while norm1_r(end)/norm1_r(1) > 10^-8 && cnt < maxit
     norm1_r(cnt) = norm(RHS-Syst_mat*[u1;v1]);
     figure(1)
     plot(FLOPS(1:cnt),log(norm1_r))
-    ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
+    ylim([log(10^-10*norm1_r(1)),log(norm1_r(1))]);
     xlim([0,3*10^9])
     drawnow
     saveMat = false;
