@@ -57,7 +57,7 @@ v1=v1+up_v;
 % [I1]=step_up_im(I1,M,N);
 
 %% post_smooth
-[u1,v1,A] = Gauss_Seidel_RB_level(u1, v1, RHS, Syst_mat, M,N, pre_s,flag,level,A,true);
+[u1,v1,A] = Gauss_Seidel_RB_level(u1, v1, RHS, Syst_mat, M,N, post_s,flag,level,A,true);
 r = norm(RHS-Syst_mat*[u1;v1]);
 norm1_r = [norm1_r;norm(r)];
 % plot(log(norm1_r));

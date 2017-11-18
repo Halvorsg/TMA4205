@@ -75,11 +75,11 @@ end
 %}
 
 %% V_cycle smoother compare mode
-max_pre_smth=2;
-max_post_smth=2;
-smth_step=1;
-picture_size=512;
-loops=2;
+max_pre_smth=10;
+max_post_smth=10;
+smth_step=5;
+picture_size=256;
+loops=1;
 tol=0.01;
 maxit=100;
 [I0,I1] = generate_test_images(picture_size);
@@ -92,12 +92,14 @@ time_VC=0;
 for post_smth_cnt=1:smth_step:(max_post_smth*smth_step)
     for pre_smth_cnt=1:smth_step:(max_pre_smth*smth_step)
         for iterator=0:loops
-            [norm_VC_it,time_VC_stamps_it]=pic_V_cycle(I0,I1,tol,maxit,pre_smth_cnt,post_smth_cnt,4);
-            norm_VC=(norm_VC*iterator+norm_VC_it)/(iterator+1);
-            time_VC=(time_VC*iterator+time_VC_stamps_it)/(iterator+1);
+            [norm_VC_it,time_VC_stamps_it]=pic_V_cycle(I0,I1,tol,maxit,pre_smth_cnt,post_smth_cnt,3);
+            norm_VC=(norm_VC*iterator+norm_VC_it(end))/(iterator+1);
+            time_VC=(time_VC*iterator+time_VC_stamps_it(end))/(iterator+1);
         end
-        norm_VC_smth(post_smth_cnt,pre_smth_cnt)=norm_VC(end);
-        time_VC_smth(post_smth_cnt,pre_smth_cnt)=time_VC(end);
+        norm_VC_smth(post_smth_cnt,pre_smth_cnt)=norm_VC;
+        time_VC_smth(post_smth_cnt,pre_smth_cnt)=time_VC;
     end
+end
+
 end
 
