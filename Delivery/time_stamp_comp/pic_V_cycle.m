@@ -1,4 +1,4 @@
-function [norm_VC_r,time_stamps]=pic_V_cycle(I0,I1,tol,maxit,pre_s,post_s,max_level)
+function [norm_VC_r,time_stamps]=pic_V_cycle(I0,I1,tol,maxit,pre_s,post_s,max_level,lambda)
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -17,7 +17,7 @@ int_check=isinteger(1);
 u1=u0(:);
 v1=v0(:);
 
-[Syst_mat,RHS] = rediscretize(I0,I1,M,N,1000);
+[Syst_mat,RHS] = rediscretize(I0,I1,M,N,lambda);
 norm1_r=norm(RHS-Syst_mat*[u1;v1]);
 
 % tic
@@ -27,7 +27,7 @@ cnt = 1;
 saveMat = true;
 time_stamps(1)=toc;
 norm_VC_r(1)=norm(RHS);
-while norm1_r(end)/norm1_r(1) > tol && cnt<maxit
+while norm1_r(end) > tol && cnt<maxit
     tic
     [ u1,v1 ,norm1_r,A,SMP]=pic_subcycle(Syst_mat,RHS,1,u1,v1,M,N,pre_s,post_s,max_level,norm1_r,A,SMP,saveMat);                                                 
     %plot(log(norm1_r))
