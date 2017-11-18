@@ -37,6 +37,7 @@ k_dep_time_VC_post_smth=zeros(4,smth_step_dep_vec_size);
 
 
 %% exemplum
+%{
 tol=0.01;
 lambda=1000;
 [I0,I1] = generate_test_images(256);
@@ -45,7 +46,7 @@ lambda=1000;
 [norm_OF_r,time_OF_stamps] = pic_OF_cg(I0, I1, tol, OF_maxit,lambda);
 
 plot(time_PCG_stamps,log(norm_PCG_r),time_VC_stamps,log(norm_VC_r),time_OF_stamps,log(norm_OF_r));
-
+%}
 
 %% compute target tolerance
 for k=6:9
