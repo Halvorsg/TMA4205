@@ -88,7 +88,7 @@ k_dep_time(k-5,:)=[time_OF(end),time_VC(end),time_PCG(end)];
 
 
 %% V_cycle level compare mode
-%{
+
 
 
 norm_VC_levels=zeros(maxlevel,1);
@@ -151,7 +151,7 @@ end
     k_dep_norm_VC_pre_smth(k-5,:)=norm_VC_pre_smth;
     k_dep_time_VC_pre_smth(k-5,:)=time_VC_pre_smth;
 
-%}
+
 end
 %% plot time against k for OF vs VX vs PCG
 f=figure;
