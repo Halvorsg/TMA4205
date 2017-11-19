@@ -24,8 +24,8 @@ FLOPS = zeros(maxit,1);
 norm1_r = zeros(maxit,1);
 norm1_r(1) = norm(r);
 max_level = 4;
-pre_smooth = 3;
-post_smooth = 3;
+pre_smooth = 1;
+post_smooth = 1;
 while norm1_r(cnt)/norm1_r(1) > tol && cnt < maxit
     tic
     cnt = cnt+1;
