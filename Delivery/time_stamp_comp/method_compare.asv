@@ -68,15 +68,15 @@ time_OF=0;
 
 
 for iterator=0:loops
-[norm_PCG_it,time_PCG_stamps_it] = pic_PCG(I0,I1,tol,PCG_maxit,lambda);
+[norm_PCG_it,time_PCG_stamps_it] = pic_PCG(I0,I1,tol,maxit,lambda);
 norm_PCG=(norm_PCG*iterator+norm_PCG_it)/(iterator+1);
 time_PCG=(time_PCG*iterator+time_PCG_stamps_it)/(iterator+1);
 
-[norm_VC_it,time_VC_stamps_it]=pic_V_cycle(I0,I1,tol,VC_maxit,5,5,3,lambda);
+[norm_VC_it,time_VC_stamps_it]=pic_V_cycle(I0,I1,tol,maxit,5,5,3,lambda);
 norm_VC=(norm_VC*iterator+norm_VC_it)/(iterator+1);
 time_VC=(time_VC*iterator+time_VC_stamps_it)/(iterator+1);
 
-[norm_OF_it,time_OF_stamps_it] = pic_OF_cg(I0, I1, tol, OF_maxit,lambda);
+[norm_OF_it,time_OF_stamps_it] = pic_OF_cg(I0, I1, tol, maxit,lambda);
 norm_OF=(norm_OF*iterator+norm_OF_it)/(iterator+1);
 time_OF=(time_OF*iterator+time_OF_stamps_it)/(iterator+1);
 end
@@ -88,7 +88,7 @@ k_dep_time(k-5,:)=[time_OF(end),time_VC(end),time_PCG(end)];
 
 
 %% V_cycle level compare mode
-%{
+
 
 
 norm_VC_levels=zeros(maxlevel,1);
@@ -151,7 +151,7 @@ end
     k_dep_norm_VC_pre_smth(k-5,:)=norm_VC_pre_smth;
     k_dep_time_VC_pre_smth(k-5,:)=time_VC_pre_smth;
 
-%}
+
 end
 %% plot time against k for OF vs VX vs PCG
 f=figure;
