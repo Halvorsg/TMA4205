@@ -19,15 +19,16 @@ int_check=isinteger(1);
 u1=u0(:);
 v1=v0(:);
 
-[Syst_mat,RHS] = rediscretize(I0,I1,M,N,1000);
+lambda = 1000;
+[Syst_mat,RHS] = rediscretize(I0,I1,M,N,lambda);
 norm1_r=norm(RHS);
 % tic
 A = {};
 SMP = {};
-maxit = 200;
+maxit = 1000;
 cnt = 1;
 saveMat = true;
-time = 0;
+time = zeros(1,maxit);
 FLOPS = zeros(1,maxit);
 pre_s = 3;
 post_s = 3;
@@ -36,20 +37,49 @@ while norm1_r(end)/norm1_r(1) > 10^-8 && cnt < maxit
     tic
     [ u1,v1 ,~,A,SMP,CG_FLOPS]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,pre_s,post_s,max_level,norm1_r,A,SMP,saveMat,0);                                                 
     cnt = cnt+1;
-    FLOPS(cnt) = FLOPS(cnt-1) + 7*N*M*(sum((1:4).^-1))*(3+3)+CG_FLOPS;
+    saveMat = false;
     norm1_r(cnt) = norm(RHS-Syst_mat*[u1;v1]);
-    figure(2)
+    FLOPS(cnt) = FLOPS(cnt-1) + 7*N*M*(sum((1:max_level).^-1))*(pre_s+post_s)+CG_FLOPS;
+    time(cnt) = time(cnt-1) + toc;
+    
+    %% Time keeping
+    fprintf('Time passed this round: %f. \t Time passed in total: %f \n',toc,time(cnt))
+    %% Plotting
+    %Flops
+    figure(1)
     plot(FLOPS(1:cnt),log(norm1_r))
     ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
     xlim([0,3*10^9])
+    % Time
+    figure(2)
+    plot(time(1:cnt),log(norm1_r(1:cnt)))
+    ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
     drawnow
-    saveMat = false;
-    time = time + toc;
-    fprintf('Time passed this round: %f. \t Time passed in total: %f \n',toc,time)
+
+
+
 end
-title('V-Cycle')
+time = time(1:cnt);
+FLOPS = FLOPS(1:cnt);
+
+
+h = figure(1);
+str = sprintf('V-Cycle with \x03bb = %i',lambda);
+title(str)
 xlabel('flops')
 ylabel('log(||residual||_2)')
+saveTightFigure(h,'Convergence_figures/V_cycle flops')
+h = figure(2);
+str = sprintf('V-Cycle with \x03bb = %i',lambda);
+title(str)
+xlabel('Time')
+ylabel('log(||residual||_2)')
+saveTightFigure(h,'Convergence_figures/V_cycle time')
+
+save('Convergence_figures/time_table_V_cycle','time')
+save('Convergence_figures/flops_table_V_cycle','FLOPS')
+save('Convergence_figures/res_table_V_cycle','norm1_r')
+
 u1 = reshape(u1,M,N); v1 = reshape(v1,M,N);
 img = mycomputeColor(u1,v1); % Have made a small change in this function;
 figure;

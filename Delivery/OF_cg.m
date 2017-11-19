@@ -46,19 +46,33 @@ toc
 %% Solving system Cx = RHS
 x0 = [u0(:);v0(:)];
 tic
-[x,norm_r,cnt] = conjugate_gradient(C,RHS,x0,tol,maxit);
+[x,norm_r,cnt,time] = conjugate_gradient(C,RHS,x0,tol,maxit);
 toc
 fprintf('Norm of residual = %1.2e \nNumber of steps = %i\n', norm_r(end),cnt)
 u = x(1:M*N); v = x(M*N+1:end);
 u = reshape(u,M,N); v = reshape(v,M,N);
 FLOPS = (1:cnt)*10*(N*M);
 %% Visualization
+h = figure;
 plot(FLOPS,log(norm_r))
 ylim([log(10^-8*norm_r(1)),log(norm_r(1))]);
 xlim([0,3*10^9])
-title('Conjugate Gradient')
+str = sprintf('Conjugate Gradient with \x03bb = %i',lambda);
+title(str)
 xlabel('flops')
 ylabel('log(||residual||_2)')
+saveTightFigure(h,'Convergence_figures/Conjugate Gradient flops')
+h = figure;
+plot(time,log(norm_r))
+str = sprintf('Conjugate Gradient with \x03bb = %i',lambda);
+title(str)
+xlabel('Time')
+ylabel('log(||residual||_2)')
+saveTightFigure(h,'Convergence_figures/Conjugate Gradient time')
+
+save('Convergence_figures/time_table_CG','time')
+save('Convergence_figures/flops_table_CG','FLOPS')
+save('Convergence_figures/res_table_CG','norm_r')
 end
 
 
