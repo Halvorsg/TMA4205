@@ -38,38 +38,31 @@ while norm1_r(end)/norm1_r(1) > 10^-8 && cnt < maxit
     [ u1,v1 ,~,A,SMP,CG_FLOPS]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,pre_s,post_s,max_level,norm1_r,A,SMP,saveMat,0);                                                 
     cnt = cnt+1;
     saveMat = false;
+    time(cnt) = time(cnt-1) + toc;    
     norm1_r(cnt) = norm(RHS-Syst_mat*[u1;v1]);
     FLOPS(cnt) = FLOPS(cnt-1) + 7*N*M*(sum((1:max_level).^-1))*(pre_s+post_s)+CG_FLOPS;
-    time(cnt) = time(cnt-1) + toc;
+
     
     %% Time keeping
-    fprintf('Time passed this round: %f. \t Time passed in total: %f \n',toc,time(cnt))
-    %% Plotting
-    %Flops
-    figure(1)
-    plot(FLOPS(1:cnt),log(norm1_r))
-    ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
-    xlim([0,3*10^9])
-    % Time
-    figure(2)
-    plot(time(1:cnt),log(norm1_r(1:cnt)))
-    ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
-    drawnow
-
-
-
+%     fprintf('Time passed this round: %f. \t Time passed in total: %f \n',toc,time(cnt))
 end
 time = time(1:cnt);
 FLOPS = FLOPS(1:cnt);
 
 
 h = figure(1);
+plot(FLOPS(1:cnt),log(norm1_r))
+ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
+xlim([0,3*10^9])
 str = sprintf('V-Cycle with \x03bb = %i',lambda);
 title(str)
 xlabel('flops')
 ylabel('log(||residual||_2)')
 saveTightFigure(h,'Convergence_figures/V_cycle flops')
+
 h = figure(2);
+plot(time(1:cnt),log(norm1_r(1:cnt)))
+ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
 str = sprintf('V-Cycle with \x03bb = %i',lambda);
 title(str)
 xlabel('Time')
@@ -84,10 +77,5 @@ u1 = reshape(u1,M,N); v1 = reshape(v1,M,N);
 img = mycomputeColor(u1,v1); % Have made a small change in this function;
 figure;
 imagesc(img)
-
-
-%[u0, v0, Ix, Iy, lambda, rhsu, rhsv, tol, maxit] = initial_values();
-%[comp_u,comp_v]=OF_cg(u0, v0, Ix, Iy, lambda, rhsu, rhsv, tol, maxit);
-%norm([u1;v1]-[comp_u;comp_v])
 end
 

@@ -43,26 +43,21 @@ while norm1_r(cnt)/norm1_r(1) > tol && cnt < maxit
     norm1_r(cnt) = norm(r);
     time(cnt) = time(cnt-1) + toc;
     fprintf('Time passed this round: %f. \t Time passed in total: %f \n',toc,time(cnt))
-    %% Plotting
-    %flops
-    figure(1)
-    plot(FLOPS(1:cnt),log(norm1_r(1:cnt)))
-    ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
-    xlim([0,3*10^9])
-    %time
-    figure(2)
-    plot(time(1:cnt),log(norm1_r(1:cnt)))
-    ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
-    drawnow
 end
 %% Saving figures and vectors
 h = figure(1);
+plot(FLOPS(1:cnt),log(norm1_r(1:cnt)))
+ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
+xlim([0,3*10^9])
 str = sprintf('Preconditioned Conjugate Gradient with \x03bb = %i',lambda);
 title(str)
 xlabel('flops')
 ylabel('log(||residual||_2)')
 saveTightFigure(h,'Convergence_figures/PCG flops')
+
 h = figure(2);
+plot(time(1:cnt),log(norm1_r(1:cnt)))
+ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
 str = sprintf('Preconditioned Conjugate Gradient with \x03bb = %i',lambda);
 title(str)
 xlabel('Time')
