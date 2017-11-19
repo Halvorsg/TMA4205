@@ -54,7 +54,11 @@ u = reshape(u,M,N); v = reshape(v,M,N);
 FLOPS = (1:cnt)*10*(N*M);
 %% Visualization
 plot(FLOPS,log(norm_r))
-title('log(||r||_2) as a function of flops')
+ylim([log(10^-8*norm_r(1)),log(norm_r(1))]);
+xlim([0,3*10^9])
+title('Conjugate Gradient')
+xlabel('flops')
+ylabel('log(||residual||_2)')
 end
 
 

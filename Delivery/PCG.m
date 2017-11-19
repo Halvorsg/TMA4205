@@ -45,7 +45,7 @@ while norm1_r(cnt)/norm1_r(1) > tol && cnt < maxit
     figure(1)
     plot(FLOPS(1:cnt),log(norm1_r(1:cnt)))
     ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
-    xlim([0,1*10^9])
+    xlim([0,3*10^9])
     drawnow
     
 %     norm1_r = [norm1_r;norm(r)];
@@ -53,7 +53,7 @@ while norm1_r(cnt)/norm1_r(1) > tol && cnt < maxit
     fprintf('Time passed this round: %f. \t Time passed in total: %f \n',toc,time)
 end
 disp(time)
-title('PCG')
+title('Precondotioned Conjugate Gradient')
 xlabel('flops')
 ylabel('log(||residual||_2)')
 u1 = x(1:length(u1)); v1 = x(length(v1)+1:end);

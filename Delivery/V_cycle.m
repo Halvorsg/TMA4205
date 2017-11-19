@@ -29,22 +29,27 @@ cnt = 1;
 saveMat = true;
 time = 0;
 FLOPS = zeros(1,maxit);
-while norm1_r(end)/norm1_r(1) > 10^-10 && cnt < maxit
+pre_s = 3;
+post_s = 3;
+max_level = 4;
+while norm1_r(end)/norm1_r(1) > 10^-8 && cnt < maxit
     tic
-    [ u1,v1 ,~,A,SMP,CG_FLOPS]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,3,3,4,norm1_r,A,SMP,saveMat,0);                                                 
+    [ u1,v1 ,~,A,SMP,CG_FLOPS]=subcycle(Syst_mat,RHS,1,u1,v1,M,N,pre_s,post_s,max_level,norm1_r,A,SMP,saveMat,0);                                                 
     cnt = cnt+1;
-    FLOPS(cnt) = FLOPS(cnt-1) + 5*N*M*(sum((1:4).^-1))*(3*3)+CG_FLOPS;
+    FLOPS(cnt) = FLOPS(cnt-1) + 7*N*M*(sum((1:4).^-1))*(3+3)+CG_FLOPS;
     norm1_r(cnt) = norm(RHS-Syst_mat*[u1;v1]);
-    figure(1)
+    figure(2)
     plot(FLOPS(1:cnt),log(norm1_r))
-    ylim([log(10^-10*norm1_r(1)),log(norm1_r(1))]);
+    ylim([log(10^-8*norm1_r(1)),log(norm1_r(1))]);
     xlim([0,3*10^9])
     drawnow
     saveMat = false;
     time = time + toc;
     fprintf('Time passed this round: %f. \t Time passed in total: %f \n',toc,time)
 end
-title('log(||r||) as a function of flops')
+title('V-Cycle')
+xlabel('flops')
+ylabel('log(||residual||_2)')
 u1 = reshape(u1,M,N); v1 = reshape(v1,M,N);
 img = mycomputeColor(u1,v1); % Have made a small change in this function;
 figure;
