@@ -95,6 +95,7 @@ for post_smth_cnt=1:smth_step:(max_post_smth*smth_step)
         norm_VC=0;
         time_VC=0;
         for iterator=0:loops
+            
             [norm_VC_it,time_VC_stamps_it]=pic_V_cycle(I0,I1,tol,maxit,pre_smth_cnt,post_smth_cnt,4);
             norm_VC=(norm_VC*iterator+norm_VC_it)/(iterator+1);
             time_VC=(time_VC*iterator+time_VC_stamps_it)/(iterator+1);

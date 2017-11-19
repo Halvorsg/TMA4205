@@ -1,11 +1,11 @@
-function V_cycle(I0,I1)
+function V_cycle()
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 addpath('..\GivenCode');
 
 [u0, v0, ~, ~, ~, ~, ~, ~, ~]=initial_values();
-% I0 = double(imread('frame10.png'));
-% I1 = double(imread('frame11.png'));
+ I0 = double(imread('frame10.png'));
+ I1 = double(imread('frame11.png'));
 
 %[I0,I1] = generate_test_images(640);
 tic
